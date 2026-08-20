@@ -2,7 +2,7 @@
 - New Skills:
     - Cultivation
         - all xp multiplied by 1 + (Cultivation.current_level * 0.1)
-        - (unlock: Sleeping 5 -> Meditaion 5 -> Cultivation)
+        - (unlock: Sleeping 5 -> Meditation 5 -> Cultivation)
         - Cultivate action in shack
 
 
