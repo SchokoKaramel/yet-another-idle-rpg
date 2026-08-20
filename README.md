@@ -1,3 +1,4 @@
+Thanks to Miktaew for making "yet another idle rpg" :)
 # Features added by this mod so far...
 - New Skills:
     - Cultivation
