@@ -4,6 +4,8 @@
         - all xp multiplied by 1 + (Cultivation.current_level * 0.1)
         - (unlock: Sleeping 5 -> Meditation 5 -> Cultivation)
         - Cultivate action in shack
+- UI:
+    - If you have more than 2 milestones on a skill, the tooltip for skills now displays a sums of all previous milestones and the current milestone.
 
 
 # Original README
