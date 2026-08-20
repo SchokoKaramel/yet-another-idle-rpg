@@ -1,6 +1,8 @@
 # Features added by this mod so far...
 - New Skills:
-    - Cultivation (unlock: Sleeping 5 -> Meditaion 5 -> Cultivation)
+    - Cultivation
+        - all xp multiplied by 1 + (Cultivation.current_level * 0.1)
+        - (unlock: Sleeping 5 -> Meditaion 5 -> Cultivation)
         - Cultivate action in shack
 
 

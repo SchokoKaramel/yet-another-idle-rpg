@@ -1876,7 +1876,7 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
     skills["Cultivation"] = new Skill({
         names: {0: "Cultivation"}, 
         description: "Cultivate...",
-        base_xp_cost: 100,
+        base_xp_cost: 200,
         category: "Activity",
         max_level: 30, 
         max_level_coefficient: 2,
