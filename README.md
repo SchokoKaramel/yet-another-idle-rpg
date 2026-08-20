@@ -5,7 +5,7 @@
         - (unlock: Sleeping 5 -> Meditation 5 -> Cultivation)
         - Cultivate action in shack
 - UI:
-    - If you have more than 2 milestones on a skill, the tooltip for skills now displays a sums of all previous milestones and the current milestone.
+    - If you have more than 2 milestones on a skill, the tooltip for skills now displays a sum of all previous milestones and the current milestone.
 
 
 # Original README
