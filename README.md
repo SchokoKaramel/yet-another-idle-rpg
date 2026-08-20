@@ -6,7 +6,7 @@
         - Cultivate action in shack
     - Gather efficiency
         - Gathering loot drops increase by a random value between 0 to ("Gather efficiency".current_level + 1)
-        - this isn't mentioned in the tooltips for gathering activities
+        - this isn't mentioned in the tooltips for gathering activities, but it is displayed normally in the loot log lines
         - max level is 3
         - unlock: Woodcutting 2 -> Gather efficiency
 - UI:
