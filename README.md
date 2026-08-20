@@ -10,6 +10,12 @@ Thanks to Miktaew for making "yet another idle rpg" :)
         - this isn't mentioned in the tooltips for gathering activities, but it is displayed normally in the loot log lines
         - max level is 3
         - unlock: Woodcutting 2 -> Gather efficiency
+    - Failure expert
+        - qol skill, that sends you back to combat after fully resting in bed
+        - max level is 1, effect only occurs at level 1
+        - unlock: Sleeping 1 -> Failure expert
+        - after unlocking the skill you get xp for it from dying (the more you die, the more xp you get, probably unbalanced by the time you get sleep to level 1...)
+        - <sub><sub>feels more like a perk than a skill...</sup></sup>
 - UI:
     - If you have more than 2 milestones on a skill, the tooltip for skills now displays a sum of all previous milestones and the current milestone.
 

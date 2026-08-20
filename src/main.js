@@ -1089,6 +1089,7 @@ function start_sleeping() {
 }
 
 function end_sleeping() {
+    send_to_bed_from_death = false; // disable qol condition here too, if manually ending sleep
     is_sleeping = false;
     change_location({location_id: current_location.id, skip_travel_time: true});
     end_activity_animation();
@@ -1909,6 +1910,10 @@ function kill_enemy(target, do_quest_events = true) {
     }
 }
 
+// return to combat qol - variables
+let death_location;
+let send_to_bed_from_death = false;
+
 function kill_player({is_combat = true} = {}) {
     if(is_combat) {
         total_deaths++;
@@ -1916,6 +1921,14 @@ function kill_player({is_combat = true} = {}) {
 
         update_displayed_health();
         if(game_options.auto_return_to_bed && last_location_with_bed) {
+
+            // return to combat qol
+            death_location = current_location;
+            send_to_bed_from_death = true;
+            if(skills["Failure expert"] && skills["Failure expert"].is_unlocked){
+                if(skills["Failure expert"].current_level<1) add_xp_to_skill({skill: skills["Failure expert"], total_deaths});
+            }
+
             change_location({location_id: last_location_with_bed});
             start_sleeping();
         } else {
@@ -5702,6 +5715,22 @@ function update() {
 
         if(!is_sleeping && current_location && current_location.light_level === "normal" && is_night()) {
             add_xp_to_skill({skill: skills["Night vision"], xp_to_add: 1});
+        }
+
+
+        // return to combat qol
+        if(skills["Failure expert"] && skills["Failure expert"].is_unlocked && is_sleeping && send_to_bed_from_death){
+            if(character.stats.full.stamina == character.stats.full.max_stamina){
+                if(character.stats.full.health == character.stats.full.max_health){
+                    
+                    send_to_bed_from_death = false; // disable qol condition so this block only gets called once
+
+                    if(skills["Failure expert"].current_level > 0){
+                        end_sleeping();
+                        change_location({location_id: death_location.id});
+                    }
+                }
+            }
         }
 
         //add xp to proper skills based on location types

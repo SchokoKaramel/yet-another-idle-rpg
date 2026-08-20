@@ -1802,6 +1802,13 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
         max_level: 10,
         max_level_coefficient: 2.5,    
         milestones: {
+            1: {
+                unlocks: {
+                    skills: [
+                        "Failure expert"
+                    ]
+                }
+            },
             2: {
                 stats: {
                     "max_health": {
@@ -2795,6 +2802,17 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
 
 //defensive skills
 (function(){
+    skills["Failure expert"] = new Skill({
+        names: {0: "Failure expert"}, 
+        description: "All you dream about in your sleep is returning to combat...",
+        base_xp_cost: 100,
+        category: "Combat",
+        max_level: 1, 
+        max_level_coefficient: 2,
+        is_unlocked: false,
+        visibility_treshold: 0,
+
+    });
     skills["Iron skin"] = new Skill({
         category: "Combat",
         names: {0: "Tough skin", 10: "Wooden skin", 20: "Stone skin", 30: "Iron skin"},
