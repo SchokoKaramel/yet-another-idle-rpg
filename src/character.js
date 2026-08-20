@@ -640,6 +640,12 @@ character.update_stats = function () {
                 * (character.xp_bonuses.multiplier.books[bonus_target] || 1)
                 * (character.xp_bonuses.multiplier.active_effects[bonus_target] || 1);
 
+
+        
+        if(bonus_target === "all")
+                if(skills["Cultivation"])
+                        character.xp_bonuses.total_multiplier.all *= 1 + (skills["Cultivation"].current_level * 0.1);
+        
         const bonus = character.xp_bonuses.total_multiplier[bonus_target];
 
         if(bonus != 1){

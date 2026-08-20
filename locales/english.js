@@ -793,6 +793,7 @@ const skills = {
     "Climbing": "Climbing",
     "Shield blocking": "Shield blocking",
     "Meditation": "Meditation",
+    "Cultivation": "Cultivation",
     "Running": "Running",
     "Haggling": "Haggling",
 };

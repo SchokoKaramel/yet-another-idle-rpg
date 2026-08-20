@@ -2418,6 +2418,15 @@ There's another gate on the wall in front of you, but you have a strange feeling
             require_tool: true,
         })
     };
+    locations["Shack"].activities = {
+        "cultivating": new LocationActivity({
+            activity_name: "cultivating",
+            starting_text: "Sit down and cultivate",
+            skill_xp_per_tick: 1,
+            is_unlocked: false,
+            unlock_text: "You feel drawn to your shack..."
+        })
+    }
     locations["Nearby cave"].activities = {
         "weightlifting": new LocationActivity({
             activity_name: "weightlifting",

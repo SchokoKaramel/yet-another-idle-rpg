@@ -1,3 +1,10 @@
+# Features added by this mod so far...
+- New Skills:
+    - Cultivation (unlock: Sleeping 5 -> Meditaion 5 -> Cultivation)
+        - Cultivate action in shack
+
+
+# Original README
 # yet another idle rpg
 ###### by Miktaew
 

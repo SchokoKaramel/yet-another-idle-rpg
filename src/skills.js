@@ -3,6 +3,7 @@
 const skills = {};
 const skill_categories = {};
 
+import { activities } from "./activities.js";
 import { get_total_level_bonus, get_total_skill_coefficient, get_total_skill_level } from "./character.js";
 import { get_crafting_quality_caps } from "./crafting_recipes.js";
 import {stat_names} from "./misc.js";
@@ -137,7 +138,7 @@ class Skill {
             } else { //levelup
                 
                 let level_after_xp = 0;
-                let unlocks = {skills: [], recipes: [], quests: []};
+                let unlocks = {skills: [], recipes: [], quests: [], activities: []};
 
                 //its alright if this goes over max level, it will be overwritten in a if-else below that
                 while(this.total_xp >= this.total_xp_to_next_lvl) {
@@ -153,6 +154,9 @@ class Skill {
                     }
                     if(this.milestones[level_after_xp]?.unlocks?.quests) {
                         unlocks.quests.push(...this.milestones[level_after_xp].unlocks.quests);
+                    }
+                    if(this.milestones[level_after_xp]?.unlocks?.activities) {
+                        unlocks.activities.push(...this.milestones[level_after_xp].unlocks.activities);
                     }
                 } //calculates lvl reached after adding xp
                 //probably could be done much more efficiently, but it shouldn't be a problem anyway
@@ -284,6 +288,114 @@ class Skill {
         
         return gains;
     }
+
+    /**
+     * @description only called to sum up previous gains in skill tooltip; calculates all the bonuses gained, up to the defined level
+     * @param {*} level 
+     * @returns formatted message with gains up to the defined level
+     */
+    get_all_stats(level) {
+        //probably should rename, since it's not just stats anymore
+        const gains = {stats: {}, xp_multipliers: {}};
+
+        let stats;
+        let xp_multipliers;
+
+        for (let i = 1; i <= level; i++) {
+            if (this.milestones[i]) {
+                stats = this.milestones[i].stats;
+                xp_multipliers = this.milestones[i].xp_multipliers;
+                
+                if(stats) {
+                    Object.keys(stats).forEach(stat => {
+                        if(!gains.stats[stat]) {
+                            gains.stats[stat] = {};
+                        }
+                        if(stats[stat].flat) {
+                            gains.stats[stat].flat = (gains.stats[stat].flat || 0) + stats[stat].flat;
+                        }
+                        if(stats[stat].multiplier) {
+                            gains.stats[stat].multiplier =  (gains.stats[stat].multiplier || 1) * stats[stat].multiplier;
+                        }
+                        
+                    });
+                }
+
+                if(xp_multipliers) {
+                    Object.keys(xp_multipliers).forEach(multiplier_key => {
+                        gains.xp_multipliers[multiplier_key] = (gains.xp_multipliers[multiplier_key] || 1) * xp_multipliers[multiplier_key];
+                        if(which_skills_affect_skill[multiplier_key]) {
+                            if(!which_skills_affect_skill[multiplier_key].includes(this.skill_id)) {
+                                which_skills_affect_skill[multiplier_key].push(this.skill_id);
+                            }
+                        } else {
+                            which_skills_affect_skill[multiplier_key] = [this.skill_id];
+                        }
+                       
+                    });
+                }
+            }
+        }
+        
+        Object.keys(gains.stats).forEach((stat) => {
+            if(gains.stats[stat].multiplier) {
+                gains.stats[stat].multiplier = Math.round(100 * gains.stats[stat].multiplier) / 100;
+            }
+        });
+        
+
+        let message = '';
+
+        if (Object.keys(gains.stats).length > 0 || Object.keys(gains.xp_multipliers).length > 0) { 
+            //message += `\n\n Thanks to ${skill_name} reaching new milestone, %HeroName% gained: `;
+
+            if (gains.stats) {
+                Object.keys(gains.stats).forEach(stat => {
+                    if(gains.stats[stat].flat) {
+                        if(message.length > 0){
+                            message += `, +${gains.stats[stat].flat} ${stat_names[stat].replace("_"," ")}`;
+                        } else{
+                            message = `Previous Gains: +${gains.stats[stat].flat} ${stat_names[stat].replace("_"," ")}`;
+                        }
+                    }
+                    if(gains.stats[stat].multiplier) {
+                        if(message.length > 0){
+                            message += `, x${Math.round(100*gains.stats[stat].multiplier)/100} ${stat_names[stat].replace("_"," ")}`;
+                        } else{    
+                            message = `Previous Gains: x${Math.round(100*gains.stats[stat].multiplier)/100} ${stat_names[stat].replace("_"," ")}`;
+                        }
+                    }   
+                });
+            }
+
+            if (gains.xp_multipliers) {
+                Object.keys(gains.xp_multipliers).forEach(xp_multiplier => {
+                    let name;
+                    if(xp_multiplier !== "all" && xp_multiplier !== "hero" && xp_multiplier !== "all_skill" && !xp_multiplier.includes("category_")) {
+                        name = skills[xp_multiplier].name();
+                        if(!skills[xp_multiplier]) {
+                            console.warn(`Skill ${this.skill_id} tried to reward an xp multiplier for something that doesn't exist: ${xp_multiplier}. I could be a misspelled skill name`);
+                        }
+                    } else {
+                        
+                        if(xp_multiplier.includes("category_")) {
+                            name = xp_multiplier.replace("category_", "") + " skills";
+                        } else {
+                            name = xp_multiplier.replace("_"," ");
+                        }
+                    }
+                    if(message.length > 0){
+                        message += `, x${Math.round(100*gains.xp_multipliers[xp_multiplier])/100} ${name} xp gain`;
+                    } else{
+                        message = `Previous Gains: x${Math.round(100*gains.xp_multipliers[xp_multiplier])/100} ${name} xp gain`;
+                    }
+                    
+                });
+            }
+        }
+        return `${message}\n\n`;
+    }
+
     get_coefficient({scaling_type, skill_level}) { //starts from 1
         //maybe lvl as param, with current lvl being used if it's undefined?
         switch (scaling_type) {
@@ -317,10 +429,14 @@ function get_unlocked_skill_rewards(skill_id) {
     
         const milestones = Object.keys(skill.milestones).filter(level => level <= skill.current_level);
         if(milestones.length > 0) {
-            unlocked_rewards = `lvl ${milestones[0]}: ${format_skill_rewards(skill.milestones[milestones[0]])}`;
-            for(let i = 1; i < milestones.length; i++) {
-                unlocked_rewards += `<br>\n\nlvl ${milestones[i]}: ${format_skill_rewards(skill.milestones[milestones[i]])}`;
+            // Sum up the skill rewards for previous levels; not including current level
+            // (use second to last position in milestone array and use it to get all rewards up to that level)
+            if(milestones.length > 1){
+                unlocked_rewards += skill.get_all_stats(milestones[milestones.length-2]);
             }
+
+            // Display the skill rewards for current level (via last position in milestone-array: milestones[milestones.length-1])
+            unlocked_rewards += `<br>\n\nlvl ${milestones[milestones.length-1]}: ${format_skill_rewards(skill.milestones[milestones[milestones.length-1]])}`;
         } else { //no rewards
             return '';
         }
@@ -1673,90 +1789,116 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
 //non-work activity related
 (function(){
     skills["Sleeping"] = new Skill({
-                                    names: {0: "Sleeping"}, 
-                                    description: "Good, regular sleep is the basis of getting stronger and helps your body heal",
-                                    get_effect_description: ()=>{
-                                        return `Multiplies health restored when sleeping by ${Math.round(100*(1 + get_total_skill_level("Sleeping")/skills["Sleeping"].max_level))/100}`;
-                                    },
-                                    base_xp_cost: 1000,
-                                    flavour_text: "One rat, two rats, three rats...",
-                                    visibility_treshold: 300,
-                                    xp_scaling: 2,
-                                    category: "Activity",
-                                    max_level: 10,
-                                    max_level_coefficient: 2.5,    
-                                    milestones: {
-                                        2: {
-                                            stats: {
-                                                "max_health": {
-                                                    flat: 10,
-                                                    multiplier: 1.04,
-                                                }
-                                            },
-                                            xp_multipliers: {
-                                                all: 1.05,
-                                            }
-                                        },
-                                        4: {
-                                            stats: {
-                                                "max_health": {
-                                                    flat: 20,
-                                                    multiplier: 1.04,
-                                                }
-                                            },
-                                            xp_multipliers: {
-                                                all: 1.05,
-                                            },
-                                        },
-                                        5: {
-                                            unlocks: {
-                                                skills: [
-                                                    "Meditation"
-                                                ]
-                                            }
-                                        },
-                                        6: {
-                                            stats: {
-                                                "max_health": {
-                                                    flat: 30,
-                                                    multiplier: 1.04,
-                                                }
-                                            },
-                                            xp_multipliers: {
-                                                all: 1.05,
-                                                "Meditation": 1.1,
-                                            }
-                                        },
-                                        8: {
-                                            stats: {
-                                                "max_health": {
-                                                    flat: 30,
-                                                    multiplier: 1.04,
-                                                }
-                                            },
-                                            xp_multipliers: {
-                                                all: 1.05,
-                                            }
-                                        },
-                                        10: {
-                                            stats: {
-                                                "max_health": {
-                                                    flat: 40,
-                                                    multiplier: 1.1,
-                                                }
-                                            },
-                                            xp_multipliers: {
-                                                all: 1.1,
-                                                "Meditation": 1.2,
-                                            },
-                                            unlocks: {
-                                                recipes: [
-                                                    {category: "crafting", subcategory: "items", recipe_id: "Simple dream catcher"},
-                                                ]
-                                            }
-                                        }
-                                    }
-                                });                         
+        names: {0: "Sleeping"}, 
+        description: "Good, regular sleep is the basis of getting stronger and helps your body heal",
+        get_effect_description: ()=>{
+            return `Multiplies health restored when sleeping by ${Math.round(100*(1 + get_total_skill_level("Sleeping")/skills["Sleeping"].max_level))/100}`;
+        },
+        base_xp_cost: 1000,
+        flavour_text: "One rat, two rats, three rats...",
+        visibility_treshold: 300,
+        xp_scaling: 2,
+        category: "Activity",
+        max_level: 10,
+        max_level_coefficient: 2.5,    
+        milestones: {
+            2: {
+                stats: {
+                    "max_health": {
+                        flat: 10,
+                        multiplier: 1.04,
+                    }
+                },
+                xp_multipliers: {
+                    all: 1.05,
+                }
+            },
+            4: {
+                stats: {
+                    "max_health": {
+                        flat: 20,
+                        multiplier: 1.04,
+                    }
+                },
+                xp_multipliers: {
+                    all: 1.05,
+                },
+            },
+            5: {
+                unlocks: {
+                    skills: [
+                        "Meditation"
+                    ]
+                }
+            },
+            6: {
+                stats: {
+                    "max_health": {
+                        flat: 30,
+                        multiplier: 1.04,
+                    }
+                },
+                xp_multipliers: {
+                    all: 1.05,
+                    "Meditation": 1.1,
+                }
+            },
+            8: {
+                stats: {
+                    "max_health": {
+                        flat: 30,
+                        multiplier: 1.04,
+                    }
+                },
+                xp_multipliers: {
+                    all: 1.05,
+                }
+            },
+            10: {
+                stats: {
+                    "max_health": {
+                        flat: 40,
+                        multiplier: 1.1,
+                    }
+                },
+                xp_multipliers: {
+                    all: 1.1,
+                    "Meditation": 1.2,
+                },
+                unlocks: {
+                    recipes: [
+                        {category: "crafting", subcategory: "items", recipe_id: "Simple dream catcher"},
+                    ]
+                }
+            }
+        }
+    });   
+    skills["Cultivation"] = new Skill({
+        names: {0: "Cultivation"}, 
+        description: "Cultivate...",
+        base_xp_cost: 100,
+        category: "Activity",
+        max_level: 30, 
+        max_level_coefficient: 2,
+        is_unlocked: false,
+        visibility_treshold: 0,
+        milestones: {
+            1: {
+                stats: {
+                    "intuition": {
+                        flat: 1, 
+                        multiplier: 1.05
+                    }
+                },
+                xp_multipliers: {
+                    "Cultivation": 1.05,
+                }
+            }
+        },
+        get_effect_description: ()=> {
+            return `Multiplies all xp gain by ${1 + (skills["Cultivation"].current_level * 0.1)}`;
+        },
+    });
     skills["Meditation"] = new Skill({
         names: {0: "Meditation"}, 
         description: "Focus your mind",
@@ -1793,6 +1935,12 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
                     "Sleeping": 1.1,
                     "Breathing": 1.1,
                     "Presence sensing": 1.05,
+                },
+                unlocks: {
+                    skills: [
+                        "Cultivation"
+                    ],
+                    activities: [{location:"Shack", activity:"cultivating"}]
                 }
             },
             6: {
