@@ -5535,7 +5535,22 @@ function update() {
                     if (gained_resources) {
                         for(let i = 0; i < gained_resources.length; i++) {
                             if(Math.random() > (1-gained_resources[i].chance)) {
-                                const count = random_range(gained_resources[i].count[0], gained_resources[i].count[1]);
+                                
+                                let count = null;
+                                if(skills["Gather efficiency"] && skills["Gather efficiency"].is_unlocked){
+
+                                    let gatherBonus=random_range(0, skills["Gather efficiency"].current_level+1);
+                                    count = random_range(gained_resources[i].count[0], gained_resources[i].count[1] + gatherBonus);
+
+                                    if (gatherBonus>0) add_xp_to_skill({skill: skills["Gather efficiency"], gatherBonus});
+                                    
+                                    //skills["Gather efficiency"].add_xp(gatherBonus);
+                                    //add_xp_to_skill({skill: skills["Regeneration"], xp_to_add: actual_healing_done});
+
+                                } else{
+                                    count = random_range(gained_resources[i].count[0], gained_resources[i].count[1]);
+                                }
+                                
                                 let quality = null;
 
                                 //quality

@@ -2,8 +2,13 @@
 - New Skills:
     - Cultivation
         - all xp multiplied by 1 + (Cultivation.current_level * 0.1)
-        - (unlock: Sleeping 5 -> Meditation 5 -> Cultivation)
+        - unlock: Sleeping 5 -> Meditation 5 -> Cultivation
         - Cultivate action in shack
+    - Gather efficiency
+        - Gathering loot drops increase by a random value between 0 to ("Gather efficiency".current_level + 1)
+        - this isn't mentioned in the tooltips for gathering activities
+        - max level is 3
+        - unlock: Woodcutting 2 -> Gather efficiency
 - UI:
     - If you have more than 2 milestones on a skill, the tooltip for skills now displays a sum of all previous milestones and the current milestone.
 

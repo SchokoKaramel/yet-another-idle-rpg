@@ -2493,6 +2493,19 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
 
 //resource gathering related
 (function(){
+
+    skills["Gather efficiency"] = new Skill({
+        names: {0: "Gather efficiency"}, 
+        description: "There is a chance to gather more materials than you think",
+        category: "Gathering",
+        base_xp_cost: 100,
+        max_level: 3, 
+        max_level_coefficient: 2,
+        visibility_treshold: 0,
+        xp_scaling: 1.6,
+        is_unlocked: false,
+    });
+
     skills["Woodcutting"] = new Skill({
         names: {0: "Woodcutting"}, 
         description: "Get better with chopping the wood and recognizing useful trees",
@@ -2500,6 +2513,15 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
         base_xp_cost: 10,
         visibility_treshold: 4,
         xp_scaling: 1.6,
+        milestones: {
+            2: {
+                unlocks: {
+                    skills: [
+                        "Gather efficiency"
+                    ]
+                }
+            }
+        }
     });
 
     skills["Mining"] = new Skill({
