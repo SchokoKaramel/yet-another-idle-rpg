@@ -794,6 +794,7 @@ const skills = {
     "Shield blocking": "Shield blocking",
     "Meditation": "Meditation",
     "Cultivation": "Cultivation",
+    "Gather efficiency": "Gather efficiency",
     "Running": "Running",
     "Haggling": "Haggling",
 };
