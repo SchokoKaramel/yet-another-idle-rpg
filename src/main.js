@@ -5556,9 +5556,6 @@ function update() {
                                     count = random_range(gained_resources[i].count[0], gained_resources[i].count[1] + gatherBonus);
 
                                     if (gatherBonus>0) add_xp_to_skill({skill: skills["Gather efficiency"], gatherBonus});
-                                    
-                                    //skills["Gather efficiency"].add_xp(gatherBonus);
-                                    //add_xp_to_skill({skill: skills["Regeneration"], xp_to_add: actual_healing_done});
 
                                 } else{
                                     count = random_range(gained_resources[i].count[0], gained_resources[i].count[1]);
@@ -5720,16 +5717,15 @@ function update() {
 
         // return to combat qol
         if(skills["Failure expert"] && skills["Failure expert"].is_unlocked && is_sleeping && send_to_bed_from_death){
-            if(character.stats.full.stamina == character.stats.full.max_stamina){
-                if(character.stats.full.health == character.stats.full.max_health){
-                    
-                    send_to_bed_from_death = false; // disable qol condition so this block only gets called once
+            if(character.stats.full.stamina == character.stats.full.max_stamina && character.stats.full.health == character.stats.full.max_health){
 
-                    if(skills["Failure expert"].current_level > 0){
-                        end_sleeping();
-                        change_location({location_id: death_location.id});
-                    }
+                send_to_bed_from_death = false; // disable qol condition so this block only gets called once
+
+                if(skills["Failure expert"].current_level > 0){
+                    end_sleeping();
+                    change_location({location_id: death_location.id});
                 }
+                
             }
         }
 

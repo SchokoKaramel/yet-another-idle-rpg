@@ -3,19 +3,25 @@ Thanks to Miktaew for making "yet another idle rpg" :)
 - New Skills:
     - Cultivation
         - all xp multiplied by 1 + (Cultivation.current_level * 0.1)
-        - unlock: Sleeping 5 -> Meditation 5 -> Cultivation
+        - unlock: Sleeping 6 -> Cultivation
         - Cultivate action in shack
     - Gather efficiency
         - Gathering loot drops increase by a random value between 0 to ("Gather efficiency".current_level + 1)
         - this isn't mentioned in the tooltips for gathering activities, but it is displayed normally in the loot log lines
         - max level is 3
-        - unlock: Woodcutting 2 -> Gather efficiency
+        - unlock: Farming 9 -> Gather efficiency
+        - gains skill sp when it adds extra materials
     - Failure expert
         - qol skill, that sends you back to combat after fully resting in bed
         - max level is 1, effect only occurs at level 1
         - unlock: Sleeping 1 -> Failure expert
         - after unlocking the skill you get xp for it from dying (the more you die, the more xp you get, probably unbalanced by the time you get sleep to level 1...)
         - <sub><sub>feels more like a perk than a skill...</sup></sup>
+    - Lucky loot
+        - the loot drop chance from enemies is multiplied by (1.2 + "Lucky loot".current_level * 0.3)
+        - max level is 10
+        - unlock: Pest killer 5 -> Lucky loot
+        - skill gains xp when loot is dropped
 - UI:
     - If you have more than 2 milestones on a skill, the tooltip for skills now displays a sum of all previous milestones and the current milestone.
 

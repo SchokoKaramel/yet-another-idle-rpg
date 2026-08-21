@@ -1,8 +1,9 @@
 "use strict";
 
+import { skills } from "./skills.js"
 import { get_total_skill_coefficient } from "./character.js";
 import { log_message } from "./display.js";
-import { add_active_effect } from "./main.js";
+import { add_active_effect, add_xp_to_skill } from "./main.js";
 
 let enemy_templates = {};
 let enemy_killcount = {};
@@ -94,7 +95,16 @@ class Enemy {
         
         for (let i = 0; i < this.loot_list.length; i++) {
             item = this.loot_list[i];
-            if(item.chance * this.get_droprate_modifier(drop_chance_modifier) >= Math.random()) {
+
+            // 
+            let item_chance = item.chance * this.get_droprate_modifier(drop_chance_modifier);
+            if (skills["Lucky loot"] && skills["Lucky loot"].is_unlocked ){
+                add_xp_to_skill({skill: skills["Lucky loot"], item_chance})
+
+                item_chance *= 1.2 + (skills["Lucky loot"].current_level * 0.3);
+            }
+
+            if(item_chance >= Math.random()) {
                 // checks if it should drop
                 let item_count = 1;
                 if("count" in item) {

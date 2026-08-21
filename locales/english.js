@@ -795,6 +795,8 @@ const skills = {
     "Meditation": "Meditation",
     "Cultivation": "Cultivation",
     "Gather efficiency": "Gather efficiency",
+    "Failure expert": "Failure expert",
+    "Lucky loot": "Lucky loot",
     "Running": "Running",
     "Haggling": "Haggling",
 };

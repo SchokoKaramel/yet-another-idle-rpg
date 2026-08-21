@@ -589,6 +589,11 @@ function format_skill_rewards(milestone){
                                         xp_multipliers: {
                                             Evasion: 1.05,
                                             "Shield blocking": 1.05,
+                                        },
+                                        unlocks: {
+                                            skills: [
+                                                "Lucky loot"
+                                            ]
                                         }
                                     },
                                     7: {
@@ -1770,6 +1775,11 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
                                             strength: {flat: 1},
                                             dexterity: {flat: 1},
                                         },
+                                        unlocks: {
+                                            skills: [
+                                                "Gather efficiency"
+                                            ]
+                                        }
                                     },
                                     10: {
                                         stats: {
@@ -1848,6 +1858,12 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
                 xp_multipliers: {
                     all: 1.05,
                     "Meditation": 1.1,
+                },
+                unlocks: {
+                    skills: [
+                        "Cultivation"
+                    ],
+                    activities: [{location:"Shack", activity:"cultivating"}]
                 }
             },
             8: {
@@ -1943,12 +1959,6 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
                     "Breathing": 1.1,
                     "Presence sensing": 1.05,
                 },
-                unlocks: {
-                    skills: [
-                        "Cultivation"
-                    ],
-                    activities: [{location:"Shack", activity:"cultivating"}]
-                }
             },
             6: {
                 stats: {
@@ -2500,17 +2510,20 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
 
 //resource gathering related
 (function(){
-
+ 
     skills["Gather efficiency"] = new Skill({
         names: {0: "Gather efficiency"}, 
         description: "There is a chance to gather more materials than you think",
-        category: "Gathering",
         base_xp_cost: 100,
+        category: "Gathering",
         max_level: 3, 
         max_level_coefficient: 2,
+        is_unlocked: false,
         visibility_treshold: 0,
         xp_scaling: 1.6,
-        is_unlocked: false,
+        get_effect_description: ()=> {
+            return `Receive up to +${1 + skills["Gather efficiency"].current_level} more materials when gathering`;
+        },
     });
 
     skills["Woodcutting"] = new Skill({
@@ -2520,15 +2533,6 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
         base_xp_cost: 10,
         visibility_treshold: 4,
         xp_scaling: 1.6,
-        milestones: {
-            2: {
-                unlocks: {
-                    skills: [
-                        "Gather efficiency"
-                    ]
-                }
-            }
-        }
     });
 
     skills["Mining"] = new Skill({
@@ -3486,6 +3490,20 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
 
 //miscellaneous skills
 (function(){
+    skills["Lucky loot"] = new Skill({
+        names: {0: "Lucky loot"}, 
+        description: "Increases enemy item drop chances",
+        base_xp_cost: 100,
+        category: "Character",
+        max_level: 10, 
+        max_level_coefficient: 2,
+        is_unlocked: false,
+        visibility_treshold: 0,
+
+        get_effect_description: ()=> {
+            return `Multiplies enemy loot drop chances by ${1.2 + (skills["Lucky loot"].current_level * 0.3)}`;
+        },
+    });
     skills["Haggling"] = new Skill({
         names: {0: "Haggling"},
         description: "The art of the deal",
