@@ -28,6 +28,19 @@ New Skills:
 </details>
 
 <details>
+<summary>Gather speed</summary>
+
+-Gathering activities become faster by (skills["Gather speed"].current_level * 10)%. 
+
+-this is factored into the tooltips for gathering activities
+
+-max level is 5
+
+-skill gains xp when you loot materials
+
+</details>
+
+<details>
 <summary>Failure expert</summary>
 
 -qol skill, that sends you back to combat after fully resting in bed
@@ -53,8 +66,7 @@ New Skills:
 
 </details>
 
-UI:
--If you have more than 2 milestones on a skill, the tooltip for skills now displays a sum of all previous milestones and the current milestone.
+UI: If you have more than 2 milestones on a skill, the tooltip for skills now displays a sum of all previous milestones and the current milestone.
 
 
 # Original README

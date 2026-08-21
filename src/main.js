@@ -5555,11 +5555,13 @@ function update() {
                                     let gatherBonus=random_range(0, skills["Gather efficiency"].current_level + 1);
                                     count = random_range(gained_resources[i].count[0], gained_resources[i].count[1] + gatherBonus);
 
-                                    if (gatherBonus>0) add_xp_to_skill({skill: skills["Gather efficiency"], gatherBonus});
+                                    if (Math.floor(gatherBonus) > 0) add_xp_to_skill({skill: skills["Gather efficiency"], gatherBonus});
 
                                 } else{
                                     count = random_range(gained_resources[i].count[0], gained_resources[i].count[1]);
                                 }
+
+                                if(Math.floor(count) > 0) add_xp_to_skill({skill: skills["Gather speed"], count});
                                 
                                 let quality = null;
 

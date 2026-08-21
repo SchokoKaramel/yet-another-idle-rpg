@@ -560,13 +560,14 @@ function format_skill_rewards(milestone){
     skills["Lucky loot"] = new Skill({
         names: {0: "Lucky loot"}, 
         description: "Increases enemy item drop chances",
-        base_xp_cost: 100,
+        base_xp_cost: 200,
         category: "Combat",
         max_level: 10, 
         max_level_coefficient: 2,
         is_unlocked: true,
         visibility_treshold: 0,
         visibility_treshold: 30,
+        xp_scaling: 2.0,
         get_effect_description: ()=> {
             return `Multiplies enemy loot drop chances by ${1.2 + (skills["Lucky loot"].current_level * 0.1)}`;
         },
@@ -1728,7 +1729,7 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
                                     1: {
                                         stats: {
                                             max_stamina: {flat: 2},
-                                        }
+                                        },
                                     },
                                     2: {
                                         stats: {
@@ -2550,15 +2551,29 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
  
     skills["Gather efficiency"] = new Skill({
         names: {0: "Gather efficiency"}, 
-        description: "There is a chance to gather more materials than you think",
+        description: "There is a chance to gather more materials than you think.",
         base_xp_cost: 100,
         category: "Gathering",
         max_level: 3, 
         max_level_coefficient: 2,
-        visibility_treshold: 30,
-        xp_scaling: 1.6,
+        visibility_treshold: 10,
+        xp_scaling: 2.0,
         get_effect_description: ()=> {
-            return `Receive up to +${1 + skills["Gather efficiency"].current_level} more materials when gathering`;
+            return `Receive up to +${1 + skills["Gather efficiency"].current_level} more materials when gathering.`;
+        },
+    });
+
+    skills["Gather speed"] = new Skill({
+        names: {0: "Gather speed"}, 
+        description: "Get faster at gathering materials.",
+        base_xp_cost: 100,
+        category: "Gathering",
+        max_level: 5, 
+        max_level_coefficient: 2,
+        visibility_treshold: 10,
+        xp_scaling: 2.0,
+        get_effect_description: ()=> {
+            return `Gathering becomes ${skills["Gather speed"].current_level * 10}% faster.`;
         },
     });
 

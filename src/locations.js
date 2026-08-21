@@ -3,12 +3,13 @@
 import { enemy_templates, Enemy } from "./enemies.js";
 import { skills } from "./skills.js";
 import { current_game_time } from "./game_time.js";
-import { activities } from "./activities.js";
+import { activities, Gathering } from "./activities.js";
 import { get_total_skill_level, get_skill_modifier, is_rat } from "./character.js";
 import { GameAction } from "./actions.js";
 import { fill_market_regions, market_regions } from "./market_saturation.js";
 import { global_flags } from "./main.js";
 import { clamp, slerp } from "./misc.js";
+import { log_message } from "./display.js";
 const locations = {}; //contains all the created locations
 const location_types = {};
 
@@ -409,7 +410,14 @@ class LocationActivity{
             }
             skill_modifier = (skill_level_sum/(activities[this.activity_name].base_skills_names?.length || 1));
         }
-        gathering_time_needed = Math.floor(slerp(this.gained_resources.time_period, skill_modifier));
+
+        // change time at max skill [time_at_lowest_skill, time_at_highest_skill] with new skill
+        let time_edited = this.gained_resources.time_period[1];
+        if(activities[this.activity_name].type == "GATHERING"){
+            time_edited *= 1 - (skills["Gather speed"].current_level / 10);
+        }
+
+        gathering_time_needed = Math.floor(slerp([this.gained_resources.time_period[0], time_edited], skill_modifier));
 
         for(let i = 0; i < this.gained_resources.resources.length; i++) {
 
