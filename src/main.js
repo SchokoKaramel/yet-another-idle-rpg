@@ -2594,7 +2594,7 @@ function process_current_loot({loot_list, is_combat, is_summary}) {
             current_loot.total[key].item_count += loot_list_entry.count;
         }
     });
-    
+
     log_loot({loot_list: current_loot, is_combat, is_dynamic: game_options.do_dynamic_loot_message, is_a_summary: is_summary && !game_options.do_dynamic_loot_message});
 }
 
@@ -5552,7 +5552,7 @@ function update() {
                                 let count = null;
                                 if(skills["Gather efficiency"] && skills["Gather efficiency"].is_unlocked){
 
-                                    let gatherBonus=random_range(0, skills["Gather efficiency"].current_level+1);
+                                    let gatherBonus=random_range(0, skills["Gather efficiency"].current_level + 1);
                                     count = random_range(gained_resources[i].count[0], gained_resources[i].count[1] + gatherBonus);
 
                                     if (gatherBonus>0) add_xp_to_skill({skill: skills["Gather efficiency"], gatherBonus});

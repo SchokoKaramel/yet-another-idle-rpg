@@ -2653,6 +2653,13 @@ There's another gate on the wall in front of you, but you have a strange feeling
             skill_xp_per_tick: 4,
             is_unlocked: true,
         }),
+        "cultivating": new LocationActivity({
+            activity_name: "cultivating",
+            starting_text: "Sit down and cultivate",
+            skill_xp_per_tick: 5,
+            is_unlocked: false,
+            unlock_text: "Your cultivation knowledge draws you up the mountain. Perhaps there is a place to rest..."
+        })
     }
 	
     locations["Riverbank"].activities = {

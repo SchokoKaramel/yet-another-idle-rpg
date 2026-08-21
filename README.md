@@ -1,29 +1,60 @@
 Thanks to Miktaew for making "yet another idle rpg" :)
 # Features added by this mod so far...
-- New Skills:
-    - Cultivation
-        - all xp multiplied by 1 + (Cultivation.current_level * 0.1)
-        - unlock: Sleeping 6 -> Cultivation
-        - Cultivate action in shack
-    - Gather efficiency
-        - Gathering loot drops increase by a random value between 0 to ("Gather efficiency".current_level + 1)
-        - this isn't mentioned in the tooltips for gathering activities, but it is displayed normally in the loot log lines
-        - max level is 3
-        - unlock: Farming 9 -> Gather efficiency
-        - gains skill sp when it adds extra materials
-    - Failure expert
-        - qol skill, that sends you back to combat after fully resting in bed
-        - max level is 1, effect only occurs at level 1
-        - unlock: Sleeping 1 -> Failure expert
-        - after unlocking the skill you get xp for it from dying (the more you die, the more xp you get, probably unbalanced by the time you get sleep to level 1...)
-        - <sub><sub>feels more like a perk than a skill...</sup></sup>
-    - Lucky loot
-        - the loot drop chance from enemies is multiplied by (1.2 + "Lucky loot".current_level * 0.3)
-        - max level is 10
-        - unlock: Pest killer 5 -> Lucky loot
-        - skill gains xp when loot is dropped
-- UI:
-    - If you have more than 2 milestones on a skill, the tooltip for skills now displays a sum of all previous milestones and the current milestone.
+New Skills:
+<details>
+<summary>Cultivation</summary>
+
+-all xp multiplied by 1 + (skills["Cultivation"].current_level * 0.1) + Math.floor(skills["Cultivation"].current_level / 5)
+
+-max level is 30
+
+-unlock: Sleeping 6 -> Cultivation
+
+-Cultivate action in shack
+
+</details>
+
+<details>
+<summary>Gather efficiency</summary>
+
+-Gathering loot drops increase by a random value between 0 to (skills["Gather efficiency"].current_level + 1)
+
+-this isn't mentioned in the tooltips for gathering activities, but it is displayed normally in the loot log lines
+
+-max level is 3
+
+-skill gains xp when it adds extra materials
+
+</details>
+
+<details>
+<summary>Failure expert</summary>
+
+-qol skill, that sends you back to combat after fully resting in bed
+
+-max level is 1, effect only occurs at level 1
+
+-unlock: Sleeping 1 -> Failure expert
+
+-after unlocking the skill you get xp for it from dying (the more you die, the more xp you get, probably unbalanced by the time you get sleep to level 1...)
+
+-<sub><sub>feels more like a perk than a skill...</sup></sup>
+
+</details>
+
+<details>
+<summary>Lucky loot</summary>
+
+-the loot drop chance from enemies is multiplied by 1.2 + (skills["Lucky loot"].current_level * 0.1)
+
+-max level is 10
+
+-skill gains xp when loot is dropped
+
+</details>
+
+UI:
+-If you have more than 2 milestones on a skill, the tooltip for skills now displays a sum of all previous milestones and the current milestone.
 
 
 # Original README

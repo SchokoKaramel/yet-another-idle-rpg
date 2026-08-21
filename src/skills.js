@@ -556,7 +556,21 @@ function format_skill_rewards(milestone){
                                 get_effect_description: ()=> {
                                     return `Multiplies AP by ${Math.round(get_total_skill_coefficient({skill_id:"Combat",scaling_type:"multiplicative"})*1000)/1000}`;
                                 }});
-    
+
+    skills["Lucky loot"] = new Skill({
+        names: {0: "Lucky loot"}, 
+        description: "Increases enemy item drop chances",
+        base_xp_cost: 100,
+        category: "Combat",
+        max_level: 10, 
+        max_level_coefficient: 2,
+        is_unlocked: true,
+        visibility_treshold: 0,
+        visibility_treshold: 30,
+        get_effect_description: ()=> {
+            return `Multiplies enemy loot drop chances by ${1.2 + (skills["Lucky loot"].current_level * 0.1)}`;
+        },
+    });
     skills["Pest killer"] = new Skill({
                                 names: {0: "Pest killer", 15: "Pest slayer"}, 
                                 description: "Small enemies might not seem very dangerous, but it's not that easy to hit them!", 
@@ -589,11 +603,6 @@ function format_skill_rewards(milestone){
                                         xp_multipliers: {
                                             Evasion: 1.05,
                                             "Shield blocking": 1.05,
-                                        },
-                                        unlocks: {
-                                            skills: [
-                                                "Lucky loot"
-                                            ]
                                         }
                                     },
                                     7: {
@@ -1719,7 +1728,7 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
                                     1: {
                                         stats: {
                                             max_stamina: {flat: 2},
-                                        },
+                                        }
                                     },
                                     2: {
                                         stats: {
@@ -1774,11 +1783,6 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
                                         stats: {
                                             strength: {flat: 1},
                                             dexterity: {flat: 1},
-                                        },
-                                        unlocks: {
-                                            skills: [
-                                                "Gather efficiency"
-                                            ]
                                         }
                                     },
                                     10: {
@@ -1897,7 +1901,7 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
         }
     });   
     skills["Cultivation"] = new Skill({
-        names: {0: "Cultivation"}, 
+        names: {0: "Cultivation", 5: "Cultivation Novice", 10: "Cultivation Apprentice", 15: "Cultivation Adept", 20: "Cultivation Expert", 25: "Cultivation Master", 30: "Cultivator"}, 
         description: "Cultivate...",
         base_xp_cost: 200,
         category: "Activity",
@@ -1916,10 +1920,43 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
                 xp_multipliers: {
                     "Cultivation": 1.05,
                 }
+            },
+            5: {
+                xp_multipliers: {
+                    "Cultivation": 1.05,
+                }
+            },
+            10: {
+                xp_multipliers: {
+                    "Cultivation": 1.1,
+                }
+            },
+            15: {
+                xp_multipliers: {
+                    "Cultivation": 1.1,
+                },
+                unlocks: {
+                    activities: [{location:"Mountain camp", activity:"cultivating"}]
+                }
+            },
+            20: {
+                xp_multipliers: {
+                    "Cultivation": 1.2,
+                }
+            },
+            25: {
+                xp_multipliers: {
+                    "Cultivation": 1.2,
+                }
+            },
+            30: {
+                xp_multipliers: {
+                    all: 1.2,
+                }
             }
         },
         get_effect_description: ()=> {
-            return `Multiplies all xp gain by ${1 + (skills["Cultivation"].current_level * 0.1)}`;
+            return `Multiplies all xp gain by ${1 + (skills["Cultivation"].current_level * 0.1) + Math.floor(skills["Cultivation"].current_level / 5)}`;
         },
     });
     skills["Meditation"] = new Skill({
@@ -2518,8 +2555,7 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
         category: "Gathering",
         max_level: 3, 
         max_level_coefficient: 2,
-        is_unlocked: false,
-        visibility_treshold: 0,
+        visibility_treshold: 30,
         xp_scaling: 1.6,
         get_effect_description: ()=> {
             return `Receive up to +${1 + skills["Gather efficiency"].current_level} more materials when gathering`;
@@ -3490,20 +3526,6 @@ Multiplies AP with daggers by ${Math.round((get_total_skill_coefficient({skill_i
 
 //miscellaneous skills
 (function(){
-    skills["Lucky loot"] = new Skill({
-        names: {0: "Lucky loot"}, 
-        description: "Increases enemy item drop chances",
-        base_xp_cost: 100,
-        category: "Character",
-        max_level: 10, 
-        max_level_coefficient: 2,
-        is_unlocked: false,
-        visibility_treshold: 0,
-
-        get_effect_description: ()=> {
-            return `Multiplies enemy loot drop chances by ${1.2 + (skills["Lucky loot"].current_level * 0.3)}`;
-        },
-    });
     skills["Haggling"] = new Skill({
         names: {0: "Haggling"},
         description: "The art of the deal",

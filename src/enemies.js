@@ -101,7 +101,7 @@ class Enemy {
             if (skills["Lucky loot"] && skills["Lucky loot"].is_unlocked ){
                 add_xp_to_skill({skill: skills["Lucky loot"], item_chance})
 
-                item_chance *= 1.2 + (skills["Lucky loot"].current_level * 0.3);
+                item_chance *= 1.2 + (skills["Lucky loot"].current_level * 0.1);
             }
 
             if(item_chance >= Math.random()) {

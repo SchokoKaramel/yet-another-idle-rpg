@@ -644,7 +644,7 @@ character.update_stats = function () {
         
         if(bonus_target === "all")
                 if(skills["Cultivation"])
-                        character.xp_bonuses.total_multiplier.all *= 1 + (skills["Cultivation"].current_level * 0.1);
+                        character.xp_bonuses.total_multiplier.all *= 1 + (skills["Cultivation"].current_level * 0.1) + Math.floor(skills["Cultivation"].current_level / 5);
         
         const bonus = character.xp_bonuses.total_multiplier[bonus_target];
 
