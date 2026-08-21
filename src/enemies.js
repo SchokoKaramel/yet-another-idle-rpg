@@ -99,13 +99,14 @@ class Enemy {
             // 
             let item_chance = item.chance * this.get_droprate_modifier(drop_chance_modifier);
             if (skills["Lucky loot"] && skills["Lucky loot"].is_unlocked ){
-                add_xp_to_skill({skill: skills["Lucky loot"], item_chance})
-
                 item_chance *= 1.2 + (skills["Lucky loot"].current_level * 0.1);
             }
 
             if(item_chance >= Math.random()) {
                 // checks if it should drop
+
+                if (skills["Lucky loot"] && skills["Lucky loot"].is_unlocked ) add_xp_to_skill({skill: skills["Lucky loot"], item_chance});
+
                 let item_count = 1;
                 if("count" in item) {
                     item_count = Math.round(Math.random() * (item["count"]["max"] - item["count"]["min"]) + item["count"]["min"]);
