@@ -49,7 +49,7 @@ New Skills:
 
 -unlock: Sleeping 1 -> Failure expert
 
--after unlocking the skill you get xp for it from dying (the more you die, the more xp you get, probably unbalanced by the time you get sleep to level 1...)
+-after unlocking the skill you get xp for it from dying
 
 -<sub><sub>feels more like a perk than a skill...</sup></sup>
 
@@ -58,7 +58,7 @@ New Skills:
 <details>
 <summary>Lucky loot</summary>
 
--the loot drop chance from enemies is multiplied by 1.2 + (skills["Lucky loot"].current_level * 0.1)
+-the loot drop chance from enemies is multiplied by 1 + (skills["Lucky loot"].current_level * 0.2)
 
 -max level is 10
 

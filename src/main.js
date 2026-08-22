@@ -1926,7 +1926,7 @@ function kill_player({is_combat = true} = {}) {
             death_location = current_location;
             send_to_bed_from_death = true;
             if(skills["Failure expert"] && skills["Failure expert"].is_unlocked){
-                if(skills["Failure expert"].current_level<1) add_xp_to_skill({skill: skills["Failure expert"], total_deaths});
+                if(skills["Failure expert"].current_level < 1) add_xp_to_skill({skill: skills["Failure expert"], xp_to_add: 1.5});
             }
 
             change_location({location_id: last_location_with_bed});
@@ -5555,13 +5555,13 @@ function update() {
                                     let gatherBonus=random_range(0, skills["Gather efficiency"].current_level + 1);
                                     count = random_range(gained_resources[i].count[0], gained_resources[i].count[1] + gatherBonus);
 
-                                    if (Math.floor(gatherBonus) > 0) add_xp_to_skill({skill: skills["Gather efficiency"], gatherBonus});
+                                    if (Math.floor(gatherBonus) > 0) add_xp_to_skill({skill: skills["Gather efficiency"], xp_to_add: gatherBonus});
 
                                 } else{
                                     count = random_range(gained_resources[i].count[0], gained_resources[i].count[1]);
                                 }
 
-                                if(Math.floor(count) > 0) add_xp_to_skill({skill: skills["Gather speed"], count});
+                                if(Math.floor(count) > 0) add_xp_to_skill({skill: skills["Gather speed"], xp_to_add: count});
                                 
                                 let quality = null;
 
